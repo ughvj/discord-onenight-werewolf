@@ -1,0 +1,9 @@
+version: '3'
+services:
+    app:
+        image: dpython
+        volumes:
+            - './:/app'
+        container_name: python
+        tty: true
+        working_dir: '/app'

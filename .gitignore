@@ -1,0 +1,7 @@
+*.un~
+*.py~
+__pycache__
+.python-version
+*.swp
+*.yml~
+key
