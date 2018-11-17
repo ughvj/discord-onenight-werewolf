@@ -34,11 +34,11 @@ class Player():
     def someoneWasVoted(self):
         self.vote_count += 1
 
-    def howMuchVoted(self):
+    def howMuchIWasVoted(self):
         return self.vote_count
 
     def IVotedThisPlayer(self, vote_target):
         self.vote_target = vote_target
 
-    def whoAmVoted(self):
+    def whomDidIVoted(self):
         return self.vote_target

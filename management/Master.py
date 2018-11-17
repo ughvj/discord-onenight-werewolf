@@ -104,8 +104,8 @@ class Master():
         # 最大票数を確認する
         max_vote = 1
         for player in self.players:
-            if player.howMuchVoted() > max_vote:
-                max_vote = player.howMuchVoted()
+            if player.howMuchIWasVoted() > max_vote:
+                max_vote = player.howMuchIWasVoted()
 
         # 勝利判定
         winner = '人狼'
@@ -137,7 +137,7 @@ class Master():
                 else:
                     ret += ':x: '
 
-            if player.howMuchVoted() == max_vote:
+            if player.howMuchIWasVoted() == max_vote:
                 ret += ':skull: '
             else:
                 ret += ':neutral_face: '
@@ -145,7 +145,7 @@ class Master():
             ret += '__**' + player.getName() + '**__: '
             ret += player.Iam().getDisplayName() + ' '
             ret += '  '
-            ret += ':point_right: ' + player.whoAmVoted() + ' '
+            ret += ':point_right: ' + player.whomDidIVoted() + ' '
             ret += '\n'
 
         ret += ':no_pedestrians: ' + self.nouse_display + '\n'
