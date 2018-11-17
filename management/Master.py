@@ -110,7 +110,7 @@ class Master():
         # 勝利判定
         winner = '人狼'
         for player in self.players:
-            if player.howMuchVoted() == max_vote:
+            if player.howMuchIWasVoted() == max_vote:
                 if player.Iam().amIWerewolf():
                     winner = '村人'
                 if player.Iam().getName() == 'suisider':
