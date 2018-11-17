@@ -13,7 +13,7 @@
 4. 2.で控えた`Token`を登録します
 
 ```
-$ cd discord-onenight-werewolf`
+$ cd discord-onenight-werewolf
 $ echo "[Token]" >> key
 ```
 
