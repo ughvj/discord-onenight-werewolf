@@ -1,18 +1,25 @@
 class Job():
-    
-    def __init__(self, name, belongs):
-        self.name= name
-        self.belongs = belongs
+
+    def __init__(self):
         self.using = False
+
+    def setName(self, name):
+        self.name = name
 
     def getName(self):
         return self.name
 
-    def actAtNight(self):
-        return True
+    def setDisplayName(self, dname):
+        self.dname = dname
 
-    def belongTo(self):
-        return self.belongs
+    def getDisplayName(self):
+        return self.dname
+
+    def IamWerewolf(self, werewolf):
+        self.werewolf = werewolf
+
+    def amIWerewolf(self):
+        return self.werewolf
 
     def use(self):
         self.using = True

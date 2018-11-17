@@ -35,6 +35,22 @@ async def on_message(message):
                 
         await client.send_message(dest, 'hi')
 
+    if message.content.startswith('/setplayer'):
+        s = message.content.split(' ')
+        players = []
+        pnames = s[1:]
+
+        for i in range(0, len(pnames)):
+            players.append(Player(pnames[i]))
+
+        for member in client.get_all_members():
+            if member.name == 'ugh':
+                dest = member
+
+    if message.content.startswith('/getplayer'):
+        for i in range(0, len(players)):
+            await client.send_message(dest, str(players[i]))
+
 with open('./key', 'r') as f:
     key = f.read()
 

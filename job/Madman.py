@@ -1,9 +1,9 @@
 from job.Job import Job
 
-class Villager(Job):
+class Madman(Job):
 
     def __init__(self):
         super().__init__()
-        super().setName('villager')
-        super().setDisplayName('**村人**')
+        super().setName('madman')
+        super().setDisplayName('**狂人**')
         super().IamWerewolf(False)

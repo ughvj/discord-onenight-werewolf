@@ -1,7 +1,9 @@
-class Werewolf(Job):
-    
-    def __init__(self, name, belongs):
-        super().__init__(name, belongs)
+from job.Job import Job
 
-    def actAtNight(self):
-        return True
+class Werewolf(Job):
+
+    def __init__(self):
+        super().__init__()
+        super().setName('werewolf')
+        super().setDisplayName('**人狼**')
+        super().IamWerewolf(True)
