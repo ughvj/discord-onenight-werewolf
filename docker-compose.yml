@@ -1,9 +1,9 @@
 version: '3'
 services:
     app:
-        image: dpython
+        image: dow
         volumes:
             - './:/app'
-        container_name: python
+        container_name: dow_container
         tty: true
         working_dir: '/app'
