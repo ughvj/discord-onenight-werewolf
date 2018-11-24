@@ -5,9 +5,12 @@ from job.Werewolf import Werewolf
 from job.Seer import Seer
 from job.Thief import Thief
 from job.Madman import Madman
-from job.Suisider import Suisider
+from job.Suicider import Suicider
+from job.Topvillager import Topvillager
+from job.Wolfking import Wolfking
 from management.Master import Master
 from time import sleep
+import copy
 
 class dowClient(discord.Client):
 
@@ -35,7 +38,7 @@ class dowClient(discord.Client):
                 return member
 
     def startg(self, args, author):
-        self.master = Master(self.players, self.jobs)
+        self.master = Master(copy.copy(self.players), copy.copy(self.jobs))
         self.phase = 'night'
         for player in self.players:
             yield player.name, self.players_display + '\n' + self.master.nightFalls(player)
@@ -87,20 +90,20 @@ class dowClient(discord.Client):
         yield author.name, self.players_display
 
     def setj(self, args, author):
-        self.jobs = []
+        self.input_jobs = []
         for jobname in args:
-            self.jobs.append(self.jobdict[jobname])
+            self.input_jobs.append(self.jobdict[jobname])
 
-        self.jobs_display = ''
-        for job in self.jobs:
-            self.jobs_display += job.getDisplayName() + ' '
+        self.jobs = ''
+        for job in self.input_jobs:
+            self.jobs += job.getDisplayName() + ' '
         return None
 
     def getj(self, args, author):
-        yield author.name, self.jobs_display
+        yield author.name, self.jobs
 
     def initialize(self):
-        self.joblist = [Villager(), Werewolf(), Seer(), Thief(), Madman(), Suisider()]
+        self.joblist = [Villager(), Werewolf(), Seer(), Thief(), Madman(), Suicider(), Topvillager(), Wolfking()]
         self.jobdict = {}
         for job in self.joblist:
             self.jobdict[job.getName()] = job

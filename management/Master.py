@@ -40,7 +40,9 @@ class Master():
             if friend_name == ' ':
                 ret += ' 味方は居ません '
             else:
-                ret += ' 味方は%sです' % friend_name
+                ret += ' 味方は%sです ' % friend_name
+            if player.Iam().getName() == 'wolfking':
+                ret += ' :white_check_mark: 使われていない職業は%sです ' % self.nouse_display
 
         if player.Iam().getName() == 'seer':
             ret += ' アクションの対象を`/act [対象ID]`で指定してください 使われていない役職を占うには、`/act`してください'
@@ -95,7 +97,11 @@ class Master():
                     return ':exclamation: 対象が存在しません'
                 if self.players[target].getName() == player.getName():
                     return ':exclamation: 自分には投票できません'
-                self.players[target].someoneWasVoted()
+                if(player.Iam().getName() == 'Topvillager'):
+                    self.players[target].someoneWasVoted()
+                    self.players[target].someoneWasVoted()
+                else:
+                    self.players[target].someoneWasVoted()
                 player.IVotedThisPlayer(self.players[target].getName())
                 player.votedPlayer()
         return ':white_check_mark: %sに投票しました 他のプレイヤーの投票をお待ちください' % self.players[target].getName()
@@ -113,7 +119,7 @@ class Master():
             if player.howMuchIWasVoted() == max_vote:
                 if player.Iam().amIWerewolf():
                     winner = '村人'
-                if player.Iam().getName() == 'suisider':
+                if player.Iam().getName() == 'suicider':
                     winner = '吊人'
                     break
 
@@ -122,17 +128,17 @@ class Master():
         for player in self.players:
             j = player.Iam().getName()
             if winner == '人狼':
-                if j == 'werewolf' or j == 'madman':
+                if j == 'werewolf' or j == 'madman' or j == 'wolfking':
                     ret += ':o: '
                 else:
                     ret += ':x: '
             if winner == '村人':
-                if j == 'werewolf' or j == 'madman':
+                if j == 'werewolf' or j == 'madman' or j == 'wolfking':
                     ret += ':x: '
                 else:
                     ret += ':o: '
             if winner == '吊人':
-                if j == 'suisider':
+                if j == 'suicider':
                     ret += ':o: '
                 else:
                     ret += ':x: '
@@ -148,7 +154,7 @@ class Master():
             ret += ':point_right: ' + player.whomDidIVoted() + ' '
             ret += '\n'
 
-        ret += ':no_pedestrians: ' + self.nouse_display + '\n'
+        ret += ':no_pedestrians: ' + self.nouse_display + '\n\n\n'
 
         return ret
 
