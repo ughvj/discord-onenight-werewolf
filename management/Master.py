@@ -3,7 +3,7 @@ import random
 class Master():
 
     def __init__(self, players, jobs):
-        # deal
+        # 役割の配布
         for i, player in enumerate(players):
             random.shuffle(jobs)
             player.Ibecome(jobs.pop(-1))
@@ -12,18 +12,12 @@ class Master():
         self.jobs = jobs
 
         # for seer
-        tmp = ''
-        for job in self.jobs:
-            if not job.usingSomeone():
-                tmp += job.getDisplayName() + ' '
-        self.nouse_display = tmp
+        self.nouse_display = ' '.join([
+            job.getDisplayName() for job in self.jobs if not job.usingSomeone()
+        ])
 
         # for werewolf
-        tmp = []
-        for player in self.players:
-            if player.Iam().amIWerewolf():
-                tmp.append(player)
-        self.werewolfs_list = tmp
+        self.werewolfs_list = [player for player in self.players if player.Iam().amIWerewolf()]
 
         # for thief
         self.thief_exchange_actor = None

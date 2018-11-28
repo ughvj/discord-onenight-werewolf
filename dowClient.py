@@ -41,7 +41,7 @@ class dowClient(discord.Client):
         self.master = Master(copy.copy(self.players), copy.copy(self.jobs))
         self.phase = 'night'
         for player in self.players:
-            yield player.name, self.players_display + '\n' + self.master.nightFalls(player)
+            yield player.name, self.players_display + '\n' + self.jobs_display + '\n' + self.master.nightFalls(player)
 
     def act(self, args, author):
         for player in self.players:
@@ -71,46 +71,35 @@ class dowClient(discord.Client):
                 yield player.name, outmes
 
     def getm(self, args, author):
-        outmes = ''
-        for i, member in enumerate(self.members):
-            outmes += '%d: %s\n' % (i, member.name)
+        outmes = '\n'.join([
+            '%d: %s' % (i, member.name)
+            for i, member in enumerate(self.members)
+        ])
         yield author.name, outmes
 
     def setp(self, args, author):
-        self.players = []
-        for i in range(0, len(args)):
-            self.players.append(Player(i, self.members[int(args[i])].name))
-
-        self.players_display = ''
-        for i in range(0, len(self.players)):
-            self.players_display += '%d: %s\n' % (self.players[i].getId(), self.players[i].getName())
+        self.players = [Player(i, self.members[int(args[i])].name) for i in range(0, len(args))]
+        self.players_display = '\n'.join([
+            '%d: %s' % (self.players[i].getId(), self.players[i].getName())
+            for i in range(0, len(self.players))
+        ])
         return None
 
     def getp(self, args, author):
         yield author.name, self.players_display
 
     def setj(self, args, author):
-        self.input_jobs = []
-        for jobname in args:
-            self.input_jobs.append(self.jobdict[jobname])
-
-        self.jobs = ''
-        for job in self.input_jobs:
-            self.jobs += job.getDisplayName() + ' '
+        self.jobs = [self.jobdict[jobname] for jobname in args]
+        self.jobs_display = ' '.join([job.getDisplayName() for job in self.jobs])
         return None
 
     def getj(self, args, author):
-        yield author.name, self.jobs
+        yield author.name, self.jobs_display
 
     def initialize(self):
         self.joblist = [Villager(), Werewolf(), Seer(), Thief(), Madman(), Suicider(), Topvillager(), Wolfking()]
-        self.jobdict = {}
-        for job in self.joblist:
-            self.jobdict[job.getName()] = job
-
-        self.members = []
-        for member in self.get_all_members():
-            self.members.append(member)
+        self.jobdict = {job.getName():job for job in self.joblist}
+        self.members = [member for member in self.get_all_members()]
 
         self.commands = {
             '/start': self.startg,

@@ -27,7 +27,7 @@ $ docker exec -d dow_container python run.py
 
 ## How to play
 1. ゲームマスター的な人を決めておきます(ゲームマスターもゲームには参加可能です)。
-2. ボットへ、DiscordのIMで`/getm`コマンドを送信し、Discordのチャンネル全員のリストを取得します。
+2. 1.の人はボットへ、DiscordのIMで`/getm`コマンドを送信し、Discordのチャンネル全員のリストを取得します。
 3. ワンナイト人狼へ参加するプレイヤーのIDを確認し、`/setp [ID] ...`でプレイヤーを登録します(IDは、`/getm`で表示されたプレイヤー名の左端の数字です)。
 4. 使用する役職を決め、`/setj [jobname] ...`で役職を登録します。役職名は、`villager`, `werewolf`, `seer`, `thief`, `madman`, `suicider`, `topvillager`, `wolfking`があります。それぞれ、村人、人狼、占い師、怪盗、狂人、吊人(てるてる)、村長、大狼です。
 5. `/getp`, `/getj`で、登録したプレイヤーと役職に間違いがないことを確認します。間違っていた場合、もう一度`/setp`, `/setj`コマンドで登録できます。
