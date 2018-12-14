@@ -1,12 +1,14 @@
 # discord-onenight-werewolf
 
 ## Abstract
+
 - Discordでワンナイト人狼を遊ぶことができます。
 - ワンナイトではない人狼には対応していません。
 - ボットは、プレイヤーから受け取ったコマンドをトリガーに動作します。
 - エラー処理はガバガバです。
 
 ## Preparation
+
 1. `Docker`を使用可能な状態にします。
 2. Discordでボットを登録し、`Token`を控えます。
 3. このリポジトリを`git clone`します。
@@ -21,11 +23,11 @@ $ echo "[Token]" >> key
 
 ```
 $ docker image build -t dow .
-$ docker-compose up -d
-$ docker exec -d dow_container python run.py
+$ docker container run --name dow_container -v $(pwd):/app -w /app -d dow
 ```
 
 ## How to play
+
 1. ゲームマスター的な人を決めておきます(ゲームマスターもゲームには参加可能です)。
 2. 1.の人はボットへ、DiscordのIMで`/getm`コマンドを送信し、Discordのチャンネル全員のリストを取得します。
 3. ワンナイト人狼へ参加するプレイヤーのIDを確認し、`/setp [ID] ...`でプレイヤーを登録します(IDは、`/getm`で表示されたプレイヤー名の左端の数字です)。
@@ -36,4 +38,5 @@ $ docker exec -d dow_container python run.py
 8. ゲーム終了後、もう一度同じプレイヤー、役職で遊びたい場合は`/start`で開始できます。変更したい場合は、3.へ戻ります。
 
 ## Appendix
+
 - 役職を増やしたい場合は、`job/`下へ、`Job`を継承した`class`を作成します。その`class`では、`setName()`, `setDisplayName()`, `IamWerewolf()`の設定が必須です。役職の挙動は、`management/Master.py`に記述します。

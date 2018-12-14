@@ -1,16 +1,8 @@
 import discord
-from player.Player import Player
-from job.Villager import Villager
-from job.Werewolf import Werewolf
-from job.Seer import Seer
-from job.Thief import Thief
-from job.Madman import Madman
-from job.Suicider import Suicider
-from job.Topvillager import Topvillager
-from job.Wolfking import Wolfking
-from management.Master import Master
+from management.PlayerMaster import PlayerMaster
+from management.JobMaster import JobMaster
+from management.GameMaster import GameMaster
 from time import sleep
-import copy
 
 class dowClient(discord.Client):
 
@@ -38,37 +30,37 @@ class dowClient(discord.Client):
                 return member
 
     def startg(self, args, author):
-        self.master = Master(copy.copy(self.players), copy.copy(self.jobs))
+        self.gmaster = GameMaster(self.pmaster.getPlayersList(), self.jmaster.getJobsList())
         self.phase = 'night'
-        for player in self.players:
-            yield player.name, self.players_display + '\n' + self.jobs_display + '\n' + self.master.nightFalls(player)
+        for player in self.pmaster.getPlayersList():
+            yield player.getName(), self.pmaster.getPlayersDisplay() + '\n' + self.jmaster.getJobsDisplay() + '\n' + self.gmaster.nightFalls(player)
 
     def act(self, args, author):
-        for player in self.players:
+        for player in self.pmaster.getPlayersList():
             if author.name == player.getName():
                 if len(args) == 0:
-                    yield player.name, self.master.act(player.getName(), -1)
+                    yield player.getName(), self.gmaster.act(player.getName(), -1)
                 else:
-                    yield player.name, self.master.act(player.getName(), int(args[-1]))
+                    yield player.getName(), self.gmaster.act(player.getName(), int(args[-1]))
 
-        if self.master.haveAllPlayerActed():
+        if self.gmaster.haveAllPlayerActed():
             self.phase = 'day'
             sleep(5)
-            outmes = self.master.sunrise()
-            for player in self.players:
-                yield player.name, outmes
+            outmes = self.gmaster.sunrise()
+            for player in self.pmaster.getPlayersList():
+                yield player.getName(), outmes
 
     def vote(self, args, author):
-        for player in self.players:
+        for player in self.pmaster.getPlayersList():
             if author.name == player.getName():
-                yield player.name, self.master.vote(player.getName(), int(args[-1]))
+                yield player.getName(), self.gmaster.vote(player.getName(), int(args[-1]))
 
-        if self.master.haveAllPlayerVoted():
+        if self.gmaster.haveAllPlayerVoted():
             self.phase = 'preparation'
             sleep(3)
-            outmes = self.master.gameset()
-            for player in self.players:
-                yield player.name, outmes
+            outmes = self.gmaster.gameset()
+            for player in self.pmaster.getPlayersList():
+                yield player.getName(), outmes
 
     def getm(self, args, author):
         outmes = '\n'.join([
@@ -78,27 +70,21 @@ class dowClient(discord.Client):
         yield author.name, outmes
 
     def setp(self, args, author):
-        self.players = [Player(i, self.members[int(args[i])].name) for i in range(0, len(args))]
-        self.players_display = '\n'.join([
-            '%d: %s' % (self.players[i].getId(), self.players[i].getName())
-            for i in range(0, len(self.players))
-        ])
+        self.pmaster = PlayerMaster([self.members[int(args[i])].name for i in range(0, len(args))])
         return None
 
     def getp(self, args, author):
-        yield author.name, self.players_display
+        yield author.name, self.pmaster.getPlayersDisplay()
 
     def setj(self, args, author):
-        self.jobs = [self.jobdict[jobname] for jobname in args]
-        self.jobs_display = ' '.join([job.getDisplayName() for job in self.jobs])
+        self.jmaster = JobMaster(args)
         return None
 
     def getj(self, args, author):
-        yield author.name, self.jobs_display
+        yield author.name, self.jmaster.getJobsDisplay()
 
     def initialize(self):
-        self.joblist = [Villager(), Werewolf(), Seer(), Thief(), Madman(), Suicider(), Topvillager(), Wolfking()]
-        self.jobdict = {job.getName():job for job in self.joblist}
+
         self.members = [member for member in self.get_all_members()]
 
         self.commands = {

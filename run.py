@@ -1,6 +1,3 @@
-from player.Player import Player
-from job.Villager import Villager
-from management.Master import Master
 from dowClient import dowClient
 
 client = dowClient()

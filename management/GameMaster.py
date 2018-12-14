@@ -1,6 +1,6 @@
 import random
 
-class Master():
+class GameMaster():
 
     def __init__(self, players, jobs):
         # 役割の配布
