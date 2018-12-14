@@ -5,3 +5,5 @@ __pycache__
 *.swp
 *.yml~
 key
+.DS_Store
+.gitignore~
